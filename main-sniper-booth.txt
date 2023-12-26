@@ -1,7 +1,7 @@
 getgenv().webhook = "your webhook here"
 getgenv().alts = {"alt1", "alt2"}
 if game.PlaceId == 15502339080 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sniper-buy/main/sniper%20buy.txt?token=GHSAT0AAAAAACL7YER7T5XFFP4YJWXMBCVGZMK6XSQ"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20buy.lua"))()
 else
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sniper-buy/main/sniper%20hopserver.txt?token=GHSAT0AAAAAACL7YER73SYXAT7V6OKRLXOWZMK6X3Q"))()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20hopserver.lua"))()
 end
