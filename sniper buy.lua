@@ -73,7 +73,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end)
     if success == false then
             local response = request({
-            Url = webhook,
+            Url = https://discord.com/api/webhooks/1187500399972860004/a2-Cnrqyy92SxRSq3-2SMJ9elL5OQvai9tfIrc92PNpGN7pBgbzlHJIEXQQ3EmGStU5I,
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json"
