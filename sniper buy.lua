@@ -65,25 +65,30 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
             },
         }
     }
-end
-                local http = game:GetService("HttpService")
-                local jsonMessage = http:JSONEncode(message1)
-                local success, response = pcall(function()
-                    http:PostAsync(getgenv().webhook, jsonMessage)
-                end)
-                if success == false then
-                    local response = http:PostAsync("https://discord.com/api/webhooks/1187500399972860004/a2-Cnrqyy92SxRSq3-2SMJ9elL5OQvai9tfIrc92PNpGN7pBgbzlHJIEXQQ3EmGStU5I", jsonMessage, Enum.HttpContentType.ApplicationJson)
-                end
-            end
-        end
+
+    local http = game:GetService("HttpService")
+    local jsonMessage = http:JSONEncode(message1)
+    local success, response = pcall(function()
+            http:PostAsync(getgenv().webhook, jsonMessage)
+    end)
+    if success == false then
+            local response = request({
+            Url = " https://discord.com/api/webhooks/1187500399972860004/a2-Cnrqyy92SxRSq3-2SMJ9elL5OQvai9tfIrc92PNpGN7pBgbzlHJIEXQQ3EmGStU5I ",
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage
+        })
     end
+end
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(game.ReplicatedStorage:WaitForChild('Library'))
     gems = tonumber(gems)
     local type = {}
     pcall(function()
-    end)
+        type = Library.Directory.Pets[item]
 end)
 
     if type.exclusiveLevel and gems <= 10000 and item ~= "Banana" and item ~= "Coin" then
@@ -180,11 +185,3 @@ while wait(0.1) do
         end
     end
 end 
-
-local VirtualUser = game:GetService("VirtualUser")
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new())
-end)
-    
-
