@@ -1,3 +1,4 @@
+local ostime = os.time()
 repeat wait() until game:IsLoaded()
 
 setfpscap(10)
@@ -6,7 +7,6 @@ local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChi
 local message1 = {}
 local Players = game:GetService('Players')
 local PlayerInServer = #Players:GetPlayers()
-local ostime = os.time()
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
     local gemamount = game:GetService("Players").LocalPlayer.leaderstats["💎 Diamonds"].Value
@@ -73,7 +73,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end)
     if success == false then
             local response = request({
-            Url = " https://discord.com/api/webhooks/1187500399972860004/a2-Cnrqyy92SxRSq3-2SMJ9elL5OQvai9tfIrc92PNpGN7pBgbzlHJIEXQQ3EmGStU5I ",
+            Url = webhook,
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json"
@@ -82,6 +82,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         })
     end
 end
+
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(game.ReplicatedStorage:WaitForChild('Library'))
