@@ -27,6 +27,6 @@ if body and body.data then
     game:GetService("TeleportService"):TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
-while wait(1) do
+while wait(10) do
     jumpToServer()
 end
