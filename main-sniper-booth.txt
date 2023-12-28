@@ -1,4 +1,5 @@
 getgenv().webhook = "your webhook here"
+getgenv().webhookFail = ""
 getgenv().alts = {"alt1", "alt2"}
 if game.PlaceId == 15502339080 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20buy.lua"))()
