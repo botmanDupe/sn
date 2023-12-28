@@ -128,7 +128,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 
     local http = game:GetService("HttpService")
     http:PostAsync(weburl, http:JSONEncode(message))
-end
+end)
     if success == false then
             local response = request({
             Url = weburl,
