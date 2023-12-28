@@ -33,11 +33,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage = Players.LocalPlayer.Name .. " just sniped a "
     if version then
-        if version == 2 then
-            version = "Rainbow"
-        elseif version == 1 then
-            version = "Golden"
-        end
+        -- Resto del código para obtener version ...
     else
        version = "Normal"
     end
@@ -75,7 +71,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         Image = game:GetService("HttpService"):JSONDecode(Image).data[1].imageUrl
     end
 
-    local message = {
+    local message1 = {
         ['content'] = "Mira un Sniper",
         ['embeds'] = {
             {
@@ -83,65 +79,53 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ["color"] = color,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
-                    {
-                        name = "PURCHASE INFO:",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "PRICE:",
-                        value = tostring(gems) .. " GEMS",
-                    },
-                    {
-                        name = "AMOUNT:",
-                        value = tostring(amount),
-                    },
-                    {
-                        name = "BOUGHT FROM:",
-                        value = "" .. tostring(boughtFrom) .. "",
-                    },
-                    {
-                        name = "PETID:",
-                        value = "" .. tostring(uid) .. " \n\n",
-                    },
-                    {
-                        name = "USER INFO:",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "USER:",
-                        value = "" .. game.Players.LocalPlayer.Name .. "",
-                    },
-                    {
-                        name = "GEMS BEFORE:",
-                        value = "" .. gemamount .. "",
-                    },
-                    {
-                        name = "GEMS AFTER:",
-                        value = "" .. gemamount - gems .. "",
-                    },
+                {
+                    name = "PURCHASE INFO:",
+                    value = "\n\n",
                 },
-                ['image'] = {
-                    ['url'] = Image
-                }
-            }
-        }
-    }
-
-    local Library = require(rs:WaitForChild('Library'))
-    local type = {}
-    pcall(function()
-        type = Library.Directory.Pets[item]
-    end)
-    if type.huge and gems <= 1000000 then
-        message['content'] = "@everyone " .. message['content']
-    end
+                {
+                    name = "PRICE:",
+                    value = tostring(gems) .. " GEMS",
+                },
+                {
+                    name = "AMOUNT:",
+                    value = tostring(amount),
+                },
+                {
+                    name = "BOUGHT FROM:",
+                    value = "" .. tostring(boughtFrom) .. "",
+                },
+                {
+                    name = "PETID:",
+                    value = "" .. tostring(uid) .. " \n\n",
+                },
+                {
+                    name = "USER INFO:",
+                    value = "\n\n",
+                },
+                {
+                    name = "USER:",
+                    value = "" .. game.Players.LocalPlayer.Name .. "",
+                },
+                {
+                    name = "GEMS:",
+                    value = tostring(gemamount),
+                },
+                {
+                    name = "IMAGE URL:",
+                    value = Image,
+                },
+            },
+        },
+    },
+} 
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
-            http:PostAsync(getgenv().webhook, jsonMessage)
+        http:PostAsync(getgenv().webhook, jsonMessage)
     end)
     if success == false then
-            local response = request({
+        local response = request({
             Url = weburl,
             Method = "POST",
             Headers = {
