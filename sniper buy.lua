@@ -63,7 +63,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     local message1 = {
-        ['content'] = "Goofyahh Sniper",
+        ['content'] = "Mira un Sniper",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
