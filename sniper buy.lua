@@ -72,7 +72,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 
     local message1 = {
-        ['content'] = "Un Nuevo Snipe",
+        ['content'] = "Mira un Sniper",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
@@ -93,19 +93,19 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 },
                 {
                     name = "BOUGHT FROM:",
-                    value = "" .. tostring(boughtFrom) .. "",
+                    value = "||" .. tostring(boughtFrom) .. "||",
                 },
                 {
                     name = "PETID:",
-                    value = "" .. tostring(uid) .. " \n\n",
+                    value = "||" .. tostring(uid) .. "|| \n\n", 
                 },
                 {
                     name = "USER INFO:",
-                    value = "\n\n",
+                    value = "||\n\n||", 
                 },
                 {
                     name = "USER:",
-                    value = "" .. game.Players.LocalPlayer.Name .. "",
+                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
                 },
                 {
                     name = "GEMS:",
