@@ -70,30 +70,42 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ["color"] = color,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
-                    {
-                        ['name'] = "PRICE:",
-                        ['value'] = tostring(gems) .. " GEMS",
-                    },
-                    {
-                        ['name'] = "BOUGHT FROM:",
-                        ['value'] = tostring(boughtFrom),
-                    },
-                    {
-                        ['name'] = "AMOUNT:",
-                        ['value'] = tostring(amount),
-                    },
-                    {
-                        ['name'] = "REMAINING GEMS:",
-                        ['value'] = tostring(gemamount),
-                    },      
-                    {
-                        ['name'] = "PETID:",
-                        ['value'] = tostring(uid),
-                    },
+                {
+                    name = "PURCHASE INFO:",
+                    value = "\n\n",
+                },
+                {
+                    name = "PRICE:",
+                    value = tostring(gems) .. " GEMS",
+                },
+                {
+                    name = "AMOUNT:",
+                    value = tostring(amount),
+                },
+                {
+                    name = "BOUGHT FROM:",
+                    value = "" .. tostring(boughtFrom) .. "",
+                },
+                {
+                    name = "PETID:",
+                    value = "" .. tostring(uid) .. " \n\n",
+                },
+                {
+                    name = "USER INFO:",
+                    value = "\n\n",
+                },
+                {
+                    name = "USER:",
+                    value = "" .. game.Players.LocalPlayer.Name .. "",
+                },
+                {
+                    name = "GEMS:",
+                    value = tostring(gemamount),
                 },
             },
-        }
-    }
+        },
+    },
+} 
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
