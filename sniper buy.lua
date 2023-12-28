@@ -62,17 +62,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	local weburl = webhookFail
     end
     
-
-    local Image = string.split(petimg, "rbxassetid://")[2]
-    Image =
-    game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" ..
-    Image ..
-    "&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false")
-    Image =
-    game:GetService("HttpService"):JSONDecode(Image).data[1].imageUrl
-    
-
-    local message = {
+    local message1 = {
         ['content'] = "Mira un Sniper",
         ['embeds'] = {
             {
@@ -109,27 +99,18 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     value = "" .. game.Players.LocalPlayer.Name .. "",
                 },
                 {
-                    name = "GEMS BEFORE:",
-                    value = "" .. gemamount .. "",
+                    name = "GEMS:",
+                    value = tostring(gemamount),
                 },
-                {
-                    name = "GEMS AFTER:",
-                    value = "" .. gemamount - gems .. "",
-                },
-                },
-
-                ['image'] = {
-                    ['url'] = Image
-                }
-            }
-        }
-    }
+            },
+        },
+    },
+} 
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
             http:PostAsync(getgenv().webhook, jsonMessage)
     end)
-	
     if success == false then
             local response = request({
             Url = weburl,
