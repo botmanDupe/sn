@@ -53,12 +53,12 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local color
     local weburl
 
-    if boughtStatus == true then
-        color = tonumber(0x33dd99)
-        weburl = webhook
+    if boughtPet == true then
+        local color = tonumber(0x33dd99)
+        local weburl = webhook
     else
-        color = tonumber(0xff00000)
-        weburl = webhookFail
+        local color = tonumber(0xff00000)
+        local weburl = webhookFail
     end
 
     local Image
@@ -72,7 +72,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 
     local message1 = {
-        ['content'] = "Mira un Sniper",
+        ['content'] = "Un Nuevo Snipe",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
