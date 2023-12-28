@@ -33,7 +33,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage = Players.LocalPlayer.Name .. " just sniped a "
     if version then
-        -- Resto del código para obtener version ...
+        if version == 2 then
+            version = "Rainbow"
+        elseif version == 1 then
+            version = "Golden"
+        end
     else
        version = "Normal"
     end
@@ -50,19 +54,6 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
     end
 
-    local color
-    local weburl
-
-    if boughtPet == true then
-        local color = tonumber(0x33dd99)
-        local weburl = webhook
-    else
-        local color = tonumber(0xff00000)
-        local weburl = webhookFail
-    end
-
-    local Image
-
     if petimg then
         Image = string.split(petimg, "rbxassetid://")[2]
         Image = game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" ..
@@ -71,61 +62,69 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         Image = game:GetService("HttpService"):JSONDecode(Image).data[1].imageUrl
     end
 
+    if boughtPet == true then
+	local color = tonumber(0x33dd99)
+	local weburl = webhook
+    else
+	local color = tonumber(0xff00000)
+	local weburl = webhookFail
+    end
+    
     local message1 = {
-        ['content'] = "Mira un Sniper",
+        ['content'] = "Goofyahh Sniper",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
                 ["color"] = color,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
-                {
-                    name = "PURCHASE INFO:",
-                    value = "\n\n",
-                },
-                {
-                    name = "PRICE:",
-                    value = tostring(gems) .. " GEMS",
-                },
-                {
-                    name = "AMOUNT:",
-                    value = tostring(amount),
-                },
-                {
-                    name = "BOUGHT FROM:",
-                    value = "||" .. tostring(boughtFrom) .. "||",
-                },
-                {
-                    name = "PETID:",
-                    value = "||" .. tostring(uid) .. "|| \n\n", 
-                },
-                {
-                    name = "USER INFO:",
-                    value = "||\n\n||", 
-                },
-                {
-                    name = "USER:",
-                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
-                },
-                {
-                    name = "GEMS:",
-                    value = tostring(gemamount),
-                },
-                {
-                    name = "IMAGE URL:",
-                    value = Image,
+                    {
+                        name = "PURCHASE INFO:",
+                        value = "\n\n",
+                    },
+                    {
+                        name = "PRICE:",
+                        value = tostring(gems) .. " GEMS",
+                    },
+                    {
+                        name = "AMOUNT:",
+                        value = tostring(amount),
+                    },
+                    {
+                        name = "BOUGHT FROM:",
+                        value = "||" .. tostring(boughtFrom) .. "||",
+                    },
+                    {
+                        name = "PETID:",
+                        value = "||" .. tostring(uid) .. "|| \n\n", 
+                    },
+                    {
+                        name = "USER INFO:",
+                        value = "||\n\n||", 
+                    },
+                    {
+                        name = "USER:",
+                        value = "||" .. game.Players.LocalPlayer.Name .. "||",
+                    },
+                    {
+                        name = "GEMS:",
+                        value = tostring(gemamount),
+                    },
+                    {
+                        name = "IMAGE URL:",
+                        value = Image,
+                    },
                 },
             },
-        },
-    },
-} 
+        }
+    }
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
-        http:PostAsync(getgenv().webhook, jsonMessage)
+            http:PostAsync(getgenv().webhook, jsonMessage)
     end)
     if success == false then
-        local response = request({
+            local response = request({
             Url = weburl,
             Method = "POST",
             Headers = {
@@ -236,7 +235,7 @@ end)
 
 game:GetService("RunService").Stepped:Connect(function()
     PlayerInServer = #getPlayers
-    if PlayerInServer < 40 or math.floor(os.clock() - osclock) >= math.random(900, 1200) then
+    if PlayerInServer < 25 or math.floor(os.clock() - osclock) >= math.random(900, 1200) then
         jumpToServer()
     end
 end)
