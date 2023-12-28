@@ -54,15 +54,28 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
     end
 
-    if boughtPet == true then
-	local color = tonumber(0x33dd99)
-	local weburl = webhook
+    local color
+    local weburl
+
+    if boughtStatus == true then
+        color = tonumber(0x33dd99)
+        weburl = webhook
     else
-	local color = tonumber(0xff00000)
-	local weburl = webhookFail
+        color = tonumber(0xff00000)
+        weburl = webhookFail
     end
-    
-    local message1 = {
+
+    local Image
+
+    if petimg then
+        Image = string.split(petimg, "rbxassetid://")[2]
+        Image = game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" ..
+        Image ..
+        "&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false")
+        Image = game:GetService("HttpService"):JSONDecode(Image).data[1].imageUrl
+    end
+
+    local message = {
         ['content'] = "Mira un Sniper",
         ['embeds'] = {
             {
@@ -70,42 +83,58 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ["color"] = color,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
-                {
-                    name = "PURCHASE INFO:",
-                    value = "\n\n",
+                    {
+                        name = "PURCHASE INFO:",
+                        value = "\n\n",
+                    },
+                    {
+                        name = "PRICE:",
+                        value = tostring(gems) .. " GEMS",
+                    },
+                    {
+                        name = "AMOUNT:",
+                        value = tostring(amount),
+                    },
+                    {
+                        name = "BOUGHT FROM:",
+                        value = "" .. tostring(boughtFrom) .. "",
+                    },
+                    {
+                        name = "PETID:",
+                        value = "" .. tostring(uid) .. " \n\n",
+                    },
+                    {
+                        name = "USER INFO:",
+                        value = "\n\n",
+                    },
+                    {
+                        name = "USER:",
+                        value = "" .. game.Players.LocalPlayer.Name .. "",
+                    },
+                    {
+                        name = "GEMS BEFORE:",
+                        value = "" .. gemamount .. "",
+                    },
+                    {
+                        name = "GEMS AFTER:",
+                        value = "" .. gemamount - gems .. "",
+                    },
                 },
-                {
-                    name = "PRICE:",
-                    value = tostring(gems) .. " GEMS",
-                },
-                {
-                    name = "AMOUNT:",
-                    value = tostring(amount),
-                },
-                {
-                    name = "BOUGHT FROM:",
-                    value = "" .. tostring(boughtFrom) .. "",
-                },
-                {
-                    name = "PETID:",
-                    value = "" .. tostring(uid) .. " \n\n",
-                },
-                {
-                    name = "USER INFO:",
-                    value = "\n\n",
-                },
-                {
-                    name = "USER:",
-                    value = "" .. game.Players.LocalPlayer.Name .. "",
-                },
-                {
-                    name = "GEMS:",
-                    value = tostring(gemamount),
-                },
-            },
-        },
-    },
-} 
+                ['image'] = {
+                    ['url'] = Image
+                }
+            }
+        }
+    }
+
+    local Library = require(rs:WaitForChild('Library'))
+    local type = {}
+    pcall(function()
+        type = Library.Directory.Pets[item]
+    end)
+    if type.huge and gems <= 1000000 then
+        message['content'] = "@everyone " .. message['content']
+    end
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
