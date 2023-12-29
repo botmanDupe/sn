@@ -83,19 +83,19 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                         value = tostring(amount),
                     },
                     {
-                        name = "COMPRADO EN:",
+                        name = "Vendido Por:",
                         value = "||" .. tostring(boughtFrom) .. "||",
                     },
                     {
-                        name = "PETID:",
+                        name = "PetID:",
                         value = "||" .. tostring(uid) .. "|| \n\n", 
                     },
                     {
-                        name = "USER:",
+                        name = "User:",
                         value = "||" .. game.Players.LocalPlayer.Name .. "||",
                     },
                     {
-                        name = "GEMAS RESTANTES:",
+                        name = "Gemas Restantes:",
                         value = tostring(gemamount),
                     },
                 },
