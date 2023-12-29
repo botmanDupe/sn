@@ -54,20 +54,25 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
     end
 
-    if boughtPet == true then
-	local color = tonumber(0x33dd99)
-	local weburl = webhook
-    else
-	local color = tonumber(0xff00000)
-	local weburl = webhookFail
-    end
+    if boughtStatus then
+        webcolor = tonumber(0x33dd99)
+        weburl = webhook
+        if mention then 
+                webContent = "<@".. userid ..">"
+            else
+            webContent = ""
+        end
+        else
+        webcolor = tonumber(0xff0000)
+        weburl = webhookFail
+        end
     
     local message1 = {
         ['content'] = "Nuevo Snipe",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
-                ["color"] = color,
+                ["color"] = webcolor,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
                     {
