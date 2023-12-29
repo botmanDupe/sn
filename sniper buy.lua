@@ -76,7 +76,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "PRICE:",
-                        value = tostring(gems) .. " GEMS",
+                        value = tostring(gems) .. " Precio",
                     },
                     {
                         name = "AMOUNT:",
