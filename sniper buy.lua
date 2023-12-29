@@ -54,14 +54,6 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
     end
 
-    if petimg then
-        Image = string.split(petimg, "rbxassetid://")[2]
-        Image = game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" ..
-        Image ..
-        "&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false")
-        Image = game:GetService("HttpService"):JSONDecode(Image).data[1].imageUrl
-    end
-
     if boughtPet == true then
 	local color = tonumber(0x33dd99)
 	local weburl = webhook
@@ -71,7 +63,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     local message1 = {
-        ['content'] = "Goofyahh Sniper",
+        ['content'] = "Nuevo Snipe",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
@@ -99,20 +91,12 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                         value = "||" .. tostring(uid) .. "|| \n\n", 
                     },
                     {
-                        name = "USER INFO:",
-                        value = "||\n\n||", 
-                    },
-                    {
                         name = "USER:",
                         value = "||" .. game.Players.LocalPlayer.Name .. "||",
                     },
                     {
                         name = "GEMS:",
                         value = tostring(gemamount),
-                    },
-                    {
-                        name = "IMAGE URL:",
-                        value = Image,
                     },
                 },
             },
