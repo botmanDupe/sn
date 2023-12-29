@@ -223,3 +223,13 @@ game:GetService("RunService").Stepped:Connect(function()
         jumpToServer()
     end
 end)
+
+if not getgenv().a then
+    getgenv().a = true
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        wait(1)
+        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end
