@@ -31,7 +31,7 @@ end
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage = Players.LocalPlayer.Name .. " just sniped a "
+    local snipeMessage = ||Players.LocalPlayer.Name|| .. " Snipeo un "
     if version then
         if version == 2 then
             version = "Rainbow"
@@ -76,7 +76,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "Precio:",
-                        value = tostring(gems) .. " Gema´s",
+                        value = tostring(gems) .. " Gema´s💎",
                     },
                     {
                         name = "Cantidad Comprados:",
@@ -95,7 +95,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                         value = "||" .. game.Players.LocalPlayer.Name .. "||",
                     },
                     {
-                        name = "Gemas Restantes:",
+                        name = "Gemas Restantes💎:",
                         value = tostring(gemamount),
                     },
                 },
