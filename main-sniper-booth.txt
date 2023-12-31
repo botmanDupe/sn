@@ -1,8 +1,13 @@
-getgenv().webhook = "your webhook here"
-getgenv().webhookFail = ""
-getgenv().alts = {"alt1", "alt2"}
+
+getgenv().webhook = "" -- enlace de webhook para snipers exitosos
+getgenv().webhookFail = "" -- enlace de webhook para snipers fallidos
+getgenv().userid = "" -- hace ping a tu identificación de discordia si ataca a un huge o titanic 
+getgenv().alts = {"",""} -- poner nombres de usuario para saltar si más de dos de ellos están en el mismo servidor
+getgenv().normalwebhook = ""
+getgenv().snipeNormalPets = false -- snipear otros artículos que tienen un precio de 1
+repeat wait() until game:IsLoaded()
 if game.PlaceId == 15502339080 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20buy.lua"))()
 else
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20hopserver.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/botmanDupe/sn/main/sniper%20hopserver.lua"))()
 end
