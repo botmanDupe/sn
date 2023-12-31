@@ -1,4 +1,3 @@
-
 getgenv().webhook = "" -- enlace de webhook para snipers exitosos
 getgenv().webhookFail = "" -- enlace de webhook para snipers fallidos
 getgenv().userid = "" -- hace ping a tu identificación de discordia si ataca a un huge o titanic 
