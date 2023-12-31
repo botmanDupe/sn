@@ -3,6 +3,20 @@ repeat task.wait() until game:IsLoaded()
 
 setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
+
+local function getImage(obj)
+    if obj:IsA("BasePart") then
+        return obj.ThumbnailUrl
+    elseif obj:IsA("Model") then
+        local thumbnail = obj:FindFirstChild("Thumbnail")
+        if thumbnail then
+            return thumbnail.Image
+        end
+    end
+
+    return nil
+end
+
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
 local getPlayers = Players:GetPlayers()
@@ -71,17 +85,22 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. item .. "**"
     
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-		["author"] = {
-			["name"] = "Sniper 🌚",
-			["icon_url"] = "https://cdn.discordapp.com/attachments/1190066556122701885/1190851706045616218/tanjiro.png?ex=65a34e13&is=6590d913&hm=8fc73b79b25ec5bb70c0800b54b8cc1d73dfc2d9f8aa116004f852ea8f27831c&",
-		},
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
+    local imageUrl = getImage(obj)
+
+local message1 = {
+    ['content'] = webContent,
+    ['embeds'] = {
+        {
+            ["author"] = {
+                ["name"] = "Sniper ",
+                ["icon_url"] = "https://cdn.discordapp.com/attachments/1190066556122701885/1190851706045616218/tanjiro.png?ex=65a34e13&is=6590d913&hm=8fc73b79b25ec5bb70c0800b54b8cc1d73dfc2d9f8aa116004f852ea8f27831c&",
+            },
+            ['title'] = snipeMessage,
+            ["color"] = webcolor,
+            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ["image"] = { 
+                ["url"] = imageUrl,
+            },
                 ['fields'] = {
                     {
                         name = "INFO DE COMPRA:",
@@ -110,7 +129,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 },
 		["footer"] = {
                         ["icon_url"] = "https://media.discordapp.net/attachments/886649528244129792/1189625887163953213/Screenshot_20231202_152047_Instagram.jpg?ex=659ed871&is=658c6371&hm=32004e71a6f154d31ca0e100a5a83d4577339548e7716b577de9ff95d8d19806&", -- optional
-                        ["text"] = "Base Hehca por Root y modificado por Craz"
+                        ["text"] = "Base Hecha por Root y modificado por Craz"
 		}
             },
         }
