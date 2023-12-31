@@ -1,3 +1,9 @@
+repeat task.wait() until game:IsLoaded()
+
+if game.GetService("Players").LocalPlayer.UserId ~= 15502339080 then
+  return
+end
+
 local osclock = os.clock()
 repeat task.wait() until game:IsLoaded()
 
@@ -25,6 +31,7 @@ local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
+
 
 if not snipeNormalPets then
     snipeNormalPets = false
