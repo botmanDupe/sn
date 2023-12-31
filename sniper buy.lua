@@ -31,41 +31,9 @@ for i = 1, PlayerInServer do
     end
 end
 
-local function getImageUrl(item)
-    local imageName = "rbxassetid://" .. item
-    return imageName
-end
-
-local function sendImage(webhookUrl, imageUrl)
-    -- Adapta este código a la forma en que envías mensajes a Discord en tu script
-    local message = {
-        ['embeds'] = {
-            {
-                ['image'] = {
-                    ['url'] = imageUrl
-                }
-            }
-        }
-    }
-    local jsonMessage = http:JSONEncode(message)
-    local success, webMessage = pcall(function()
-	http:PostAsync(webhookUrl, jsonMessage)
-    end)
-    if success == false then
-        local response = request({
-            Url = weburl,
-            Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json"
-            },
-            Body = jsonMessage
-        })
-    end
-end
-
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
-    local gemamount = Players.LocalPlayer.leaderstats[" Diamonds"].Value
-    local snipeMessage = "||".. Players.LocalPlayer.Name .. "||"
+    local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     if version then
         if version == 2 then
@@ -102,12 +70,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     snipeMessage = snipeMessage .. item .. "**"
-
-    -- Obtenemos la URL de la imagen
-    local imageUrl = getImageUrl(item)
-
-    -- Enviamos la imagen a Discord
-    sendImage(weburl, imageUrl)
+    
     local message1 = {
         ['content'] = webContent,
         ['embeds'] = {
@@ -147,7 +110,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 },
 		["footer"] = {
                         ["icon_url"] = "https://media.discordapp.net/attachments/886649528244129792/1189625887163953213/Screenshot_20231202_152047_Instagram.jpg?ex=659ed871&is=658c6371&hm=32004e71a6f154d31ca0e100a5a83d4577339548e7716b577de9ff95d8d19806&", -- optional
-                        ["text"] = "Base Hehca por Root y modificado por Craz"
+                        ["text"] = "Base Hecha por Root y modificado por Craz"
 		}
             },
         }
