@@ -110,7 +110,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 },
 		["footer"] = {
                         ["icon_url"] = "https://media.discordapp.net/attachments/886649528244129792/1189625887163953213/Screenshot_20231202_152047_Instagram.jpg?ex=659ed871&is=658c6371&hm=32004e71a6f154d31ca0e100a5a83d4577339548e7716b577de9ff95d8d19806&", -- optional
-                        ["text"] = "Base Hehca por Root y modificado por Craz"
+                        ["text"] = "Base Hecha por Root y modificado por Craz"
 		}
             },
         }
