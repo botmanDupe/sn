@@ -62,6 +62,12 @@ local function jumpToServer()
             print("Server is below 17 players. Joining a different one.")
             jumpToServer()
         end
+
+        -- Check if the current game is not 15502339080
+        if game.PlaceId ~= 15502339080 then
+            print("Changing to game 15502339080")
+            game:GetService("TeleportService"):TeleportToPlaceInstance(15502339080)
+        end
     end
 end
 
