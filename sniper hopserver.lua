@@ -42,14 +42,35 @@ end
 
 local ServerTypes = { ["Normal"] = "desc", ["Low"] = "asc" }
 
-function Jump(serverType)
+-- Functions
+
+local function checkAlts()
+    local alts = getgenv().alts
+    local players = game:GetService("Players"):GetPlayers()
+    local altCount = 0
+    for _, player in ipairs(players) do
+        for _, altName in ipairs(alts) do
+            if player.Name == altName then
+                altCount = altCount + 1
+                break
+            end
+        end
+    end
+    if altCount >= 2 then
+        return true  -- Saltar de servidor
+    else
+        return false  -- No saltar
+    end
+end
+
+local function Jump(serverType)
     serverType = serverType or "Normal" -- Default parameter
     if not ServerTypes[serverType] then serverType = "Normal" end
 
     local function GetServerList(cursor)
         cursor = cursor and "&cursor=" .. cursor or ""
         local API_URL = string.format('https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=100', tostring(PlaceId), ServerTypes[serverType])
-        return HttpService:JSONDecode(game:HttpGet(APIURL .. cursor))
+        return HttpService:JSONDecode(game:HttpGet(API_URL .. cursor))
     end
 
     local currentPageCursor = nil
@@ -60,12 +81,15 @@ function Jump(serverType)
         for , server in ipairs(serverList.data) do
             if server.playing and tonumber(server.playing) >= MINIMUM_PLAYERS and tonumber(server.playing) < Players.MaxPlayers and not table.find(ServerHopData.CheckedServers, tostring(server.id)) then
                 -- Save current data to disk/workspace
-                ServerHopData.LastTimeHop = os.time() -- Last time that tried to hop
-                table.insert(ServerHopData.CheckedServers, server.id) -- Insert on our list
-                writefile(fileName, HttpService:JSONEncode(ServerHopData)) -- Save our data
-                TeleportService:TeleportToPlaceInstance(PlaceId, server.id, LocalPlayer) -- Actually teleport the player
-                -- Change the wait time if you take long times to hop (or it will add more than 1 server in the file)
-                wait(0.5)
+                if (pingValue < server.ping or game.PlaceId ~= 15502339080) then
+                    ServerHopData.LastTimeHop = os.time() -- Last time that tried to hop
+                    table.insert(ServerHopData.CheckedServers, server.id) -- Insert on our list
+                    writefile(fileName, HttpService:JSONEncode(ServerHopData)) -- Save our data
+                    TeleportService:TeleportToPlaceInstance(PlaceId, server.id, LocalPlayer) -- Actually teleport the player
+                    -- Change the wait time if you take long times to hop (or it will add more than 1 server in the file)
+                    wait(0.5)
+                    break
+                end
             end
         end
 
@@ -73,16 +97,10 @@ function Jump(serverType)
     end
 end
 
--- check current server ping
-function CheckPingStat()
-    if pingValue >= pingThreshold then
-        print("Ping Is Higher Than 310, Sevrer Hopping...")
-        Jump("Normal")
-    else
-        print("Ping is sufficent. No Server Hop Needed")
-    end
-end
+-- Main loop
 
-while task.wait(60) do
-    CheckPingStat()
+while wait(1) do
+    if checkAlts() then
+        Jump("Normal")
+    end
 end
