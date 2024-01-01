@@ -16,9 +16,9 @@ local function jumpToServer()
     if body and body.data then
         for i, v in next, body.data do
             if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                -- Prioritize servers with 30 to 35 players
+                -- Prioritize servers with 28 to 38 players
                 local priority = (v.playing / v.maxPlayers) * 100
-                if priority >= 75 and priority <= 85 then
+                if priority >= 70 and priority <= 80 then
                     table.insert(servers, priority, v.id)
                 end
             end
@@ -58,8 +58,8 @@ local function jumpToServer()
 
         -- Check if the server is still full
         local playersInServer = game:GetService("Players"):GetPlayersInServer(chosenServer)
-        if playersInServer.Count < 20 then
-            print("Server is below 20 players. Joining a different one.")
+        if playersInServer.Count < 17 then
+            print("Server is below 17 players. Joining a different one.")
             jumpToServer()
         end
     end
