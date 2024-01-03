@@ -174,6 +174,21 @@ if type.exclusiveLevel and price <= 10000 and item ~= "Banana" and item ~= "Coin
       processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif class == "Charm" and gems <= 10000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+	processListingInfo(uid, gems, items, version, shiny, amount, username, boughtPet, ping)
+elseif item == "Chest Mimis" and gems <= 100000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, items, version, shiny, amount, username, boughtPet, ping)
+elseif item == "Diamond Chest Mimic" and gems <= 100000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, items, version, shiny, amount, username, boughtPet, ping)
+elseif item == "Fortune" and gems <= 100000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, items, version, shiny, amount, username, boughtPet, ping)
+elseif item == "Lucky Block" and gems <= 100000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, items, version, shiny, amount, username, boughtPet, ping)
+elseif item == "Massive Comet" and gems <= 100000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
       processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif type.huge and price <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
