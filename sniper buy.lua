@@ -48,7 +48,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
 	weburl = webhook
-        snipeMessage = snipeMessage .. " just sniped a "
+        snipeMessage = snipeMessage .. " Snipeastes un "
 	if mention then 
             webContent = "<@".. userid ..">"
         else
@@ -61,7 +61,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     else
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " failed to snipe a "
+	snipeMessage = snipeMessage .. " No logró Snipear un "
 	if snipeNormal == true then
 	    weburl = normalwebhook
 	    snipeNormal = false
@@ -81,42 +81,46 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         ['embeds'] = {
             {
 		["author"] = {
-			["name"] = "Luna 🌚",
-			["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&",
+			["name"] = "Sniper 🌚",
+			["icon_url"] = "https://cdn.discordapp.com/attachments/1190066556122701885/1190851706045616218/tanjiro.png?ex=65a34e13&is=6590d913&hm=8fc73b79b25ec5bb70c0800b54b8cc1d73dfc2d9f8aa116004f852ea8f27831c&",
 		},
                 ['title'] = snipeMessage,
                 ["color"] = webcolor,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
                     {
-                        ['name'] = "__Price:__",
-                        ['value'] = tostring(gems) .. " 💎",
+                        name = "INFO DE COMPRA:",
+                        value = "\n\n",
                     },
                     {
-                        ['name'] = "__Bought from:__",
-                        ['value'] = "||"..tostring(boughtFrom).."|| ",
+                        name = "Precio:",
+                        value = tostring(gems) .. " Gema´s💎",
                     },
                     {
-                        ['name'] = "__Amount:__",
-                        ['value'] = tostring(amount) .. "x",
+                        name = "Cantidad Comprados:",
+                        value = tostring(amount),
                     },
                     {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = tostring(gemamount) .. " 💎",
-                    },      
+                        name = "Vendido Por:",
+                        value = "🤡 ||" .. tostring(boughtFrom) .. "|| 🤡",
+                    },
                     {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
+                        name = "PetID:",
+                        value = "||" .. tostring(uid) .. "|| \n\n", 
+                    },
+                    {
+                        name = "Gemas Restantes💎:",
+                        value = tostring(gemamount),
                     },
                 },
 		["footer"] = {
-                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&", -- optional
-                        ["text"] = "Heavily Modified by Root"
+                        ["icon_url"] = "https://media.discordapp.net/attachments/886649528244129792/1189625887163953213/Screenshot_20231202_152047_Instagram.jpg?ex=659ed871&is=658c6371&hm=32004e71a6f154d31ca0e100a5a83d4577339548e7716b577de9ff95d8d19806&", -- optional
+                        ["text"] = "Base Hecha por Root y modificado por Craz"
 		}
             },
         }
     }
-
+	
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
 	http:PostAsync(weburl, jsonMessage)
