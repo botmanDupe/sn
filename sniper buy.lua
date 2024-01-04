@@ -123,13 +123,12 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     local remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
-    local price = getPetPrice(item, version, shiny)
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
     else
         local cooldown = remainingCooldown
-        local delay = remainingCooldown / (1 + price) - Players.LocalPlayer:GetNetworkPing()
+        local delay = remainingCooldown / 2 - Players.LocalPlayer:GetNetworkPing()
         if delay < 0 then
             delay = 0
         end
@@ -140,7 +139,7 @@ local function tryPurchase(uid, gems, item, version, shiny, amount, username, cl
             end
             tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
         end)
-        print("La pet está en enfriamiento por " .. cooldown .. " segundos.")
+        petsInCooldown[uid] = cooldown
     end
 end
 
