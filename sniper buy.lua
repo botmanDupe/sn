@@ -135,7 +135,7 @@ local function tryPurchase(listings)
     local listing = queue[1]
 
     if listing.remainingCooldown > 0 then
-      task.wait(3.35)
+      task.wait(0.1)
       listing.remainingCooldown = calculateRemainingCooldown(listing["ReadyTimestamp"], listing["Timestamp"])
     else
       local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
