@@ -121,17 +121,24 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
-local function calculateRemainingCooldown(listing)
-  local buyTimestamp = listing["ReadyTimestamp"]
-  local now = os.time()
-  local remainingCooldown = (buyTimestamp + listing["CooldownDuration"]) - now
-  return remainingCooldown
-end
-
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-  local remainingCooldown = calculateRemainingCooldown(listing)
-  if remainingCooldown <= 0 then
+  if uid == 0 then
+    return
   end
+
+  local success = game:GetService("MarketplaceService"):PurchaseItem(uid, item, amount)
+
+  if success then
+    local message = {
+      title = "Compra exitosa",
+      color = 0x00ff00,
+      content = "Se compró el artículo " .. item .. " por " .. amount .. " unidades.",
+    }
+
+    http:PostAsync(webhook, json.encode(message))
+  end
+
+  return success
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
