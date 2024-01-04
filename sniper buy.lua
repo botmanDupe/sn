@@ -121,21 +121,39 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
+local queue = queue.new()
+
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     local remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
     else
-        local delay = remainingCooldown / 2 - Players.LocalPlayer:GetNetworkPing()
-        if delay < 0 then
-            delay = 0
-        end
-        task.wait(delay)
-        tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+        queue:push({
+            uid = uid,
+            gems = gems,
+            item = item,
+            version = version,
+            shiny = shiny,
+            amount = amount,
+            username = username,
+            class = class,
+            playerid = playerid,
+            buytimestamp = buytimestamp,
+            listTimestamp = listTimestamp,
+            snipeNormal = snipeNormal,
+        })
     end
 end
 
+local function runQueue()
+    while queue:length() > 0 do
+        local item = queue:pop()
+        tryPurchase(item.uid, item.gems, item.item, item.version, item.shiny, item.amount, item.username, item.class, item.playerid, item.buytimestamp, item.listTimestamp, item.snipeNormal)
+    end
+end
+
+runQueue()
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if type(message) == "table" then
             local highestTimestamp = -math.huge
