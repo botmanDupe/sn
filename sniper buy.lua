@@ -59,6 +59,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	    snipeNormal = false
 	end
     else
+	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
 	snipeMessage = snipeMessage .. " No logró Snipear un "
