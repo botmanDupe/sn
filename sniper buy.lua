@@ -122,12 +122,19 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+
   local buytimestamp = listing["ReadyTimestamp"]
   local listTimestamp = listing["Timestamp"]
+
   if buytimestamp > listTimestamp then
-  else
-    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    while buytimestamp > listTimestamp do
+      task.wait(0.1)
+      buytimestamp = listing["ReadyTimestamp"]
+      listTimestamp = listing["Timestamp"]
+    end
   end
+  local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+  processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
