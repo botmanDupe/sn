@@ -121,28 +121,19 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
-local queue = queue.new()
-
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     local remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
+    local serverLoad = getServerLoad()
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
     else
-        queue:push({
-            uid = uid,
-            gems = gems,
-            item = item,
-            version = version,
-            shiny = shiny,
-            amount = amount,
-            username = username,
-            class = class,
-            playerid = playerid,
-            buytimestamp = buytimestamp,
-            listTimestamp = listTimestamp,
-            snipeNormal = snipeNormal,
-        })
+        local delay = remainingCooldown / (1 + serverLoad) - Players.LocalPlayer:GetNetworkPing()
+        if delay < 0 then
+            delay = 0
+        end
+        task.wait(delay)
+        tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     end
 end
 
