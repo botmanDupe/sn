@@ -121,6 +121,8 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
+local petsInCooldown = {}
+
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
@@ -138,12 +140,9 @@ local function tryPurchase(uid, gems, item, version, shiny, amount, username, cl
             end
             tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
         end)
-        if not petsInCooldown[uid] then
-            petsInCooldown[uid] = cooldown
-        end
+        petsInCooldown[uid] = cooldown
     end
 end
-
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if type(message) == "table" then
