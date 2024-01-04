@@ -123,17 +123,17 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     local remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
-    local serverLoad = getServerLoad()
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
     else
-        local delay = remainingCooldown / (1 + serverLoad) - Players.LocalPlayer:GetNetworkPing()
-        if delay < 0 then
-            delay = 0
-        end
-        task.wait(delay)
-        tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+        task.spawn(function()
+            while remainingCooldown > 0 do
+                task.wait(1)
+                remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
+            end
+            tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+        end)
     end
 end
 
