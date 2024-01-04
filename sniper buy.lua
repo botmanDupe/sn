@@ -122,7 +122,6 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    local remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
     if remainingCooldown <= 0 then
         local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
@@ -139,7 +138,9 @@ local function tryPurchase(uid, gems, item, version, shiny, amount, username, cl
             end
             tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
         end)
-        petsInCooldown[uid] = cooldown
+        if not petsInCooldown[uid] then
+            petsInCooldown[uid] = cooldown
+        end
     end
 end
 
