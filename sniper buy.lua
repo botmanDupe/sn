@@ -121,27 +121,17 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
+local function calculateRemainingCooldown(listing)
+  local buyTimestamp = listing["ReadyTimestamp"]
+  local now = os.time()
+  local remainingCooldown = (buyTimestamp + listing["CooldownDuration"]) - now
+  return remainingCooldown
+end
+
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    if remainingCooldown <= 0 then
-        local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
-    else
-        local cooldown = remainingCooldown
-        local delay = remainingCooldown / 2 - Players.LocalPlayer:GetNetworkPing()
-        if delay < 0 then
-            delay = 0
-        end
-        task.spawn(function()
-            while remainingCooldown > 0 do
-                task.wait(delay)
-                remainingCooldown = calculateRemainingCooldown(buytimestamp, listTimestamp)
-            end
-            tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-        end)
-        if not petsInCooldown[uid] then
-            petsInCooldown[uid] = cooldown
-        end
-    end
+  local remainingCooldown = calculateRemainingCooldown(listing)
+  if remainingCooldown <= 0 then
+  end
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
