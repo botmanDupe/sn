@@ -125,6 +125,12 @@ local function tryPurchase(listings)
   for _, listing in ipairs(listings) do
     local buytimestamp = listing["ReadyTimestamp"]
     local listTimestamp = listing["Timestamp"]
+
+    while buytimestamp > listTimestamp do
+      task.wait(0.1)
+      buytimestamp = listing["ReadyTimestamp"]
+    end
+
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
   end
