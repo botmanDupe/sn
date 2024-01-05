@@ -121,24 +121,29 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
-local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-  if uid == 0 then
-    return
+local function tryPurchase(listings)
+  local queue = {}
+
+  for _, listing in ipairs(listings) do
+    table.insert(queue, {
+      listing = listing,
+      remainingCooldown = calculateRemainingCooldown(listing["ReadyTimestamp"], listing["Timestamp"]),
+    })
   end
 
-  local success = game:GetService("MarketplaceService"):PurchaseItem(uid, item, amount)
+  while #queue > 0 do
+    local listing = queue[1]
 
-  if success then
-    local message = {
-      title = "Compra exitosa",
-      color = 0x00ff00,
-      content = "Se compró el artículo " .. item .. " por " .. amount .. " unidades.",
-    }
+    if listing.remainingCooldown > 0 then
+      task.wait(0.1)
+      listing.remainingCooldown = calculateRemainingCooldown(listing["ReadyTimestamp"], listing["Timestamp"])
+    else
+      local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+      processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 
-    http:PostAsync(webhook, json.encode(message))
+      table.remove(queue, 1)
+    end
   end
-
-  return success
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
