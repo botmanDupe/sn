@@ -127,7 +127,7 @@ local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local Library = require(game:GetService("ReplicatedStorage"):WaitForChild("Library"))
 
-local function processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
   local coolingOff = true
   local coolingOffTime = buytimestamp - osclock()
   if coolingOffTime <= 0 then
