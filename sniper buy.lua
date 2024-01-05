@@ -121,7 +121,13 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
-local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
+local Players = game:GetService("Players")
+local http = game:GetService("HttpService")
+local ts = game:GetService("TeleportService")
+local Library = require(game:GetService("ReplicatedStorage"):WaitForChild("Library"))
+
+local function processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     local coolingOff = true
     local coolingOffTime = buytimestamp - os.clock()
     if coolingOffTime <= 0 then
@@ -143,7 +149,7 @@ end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if type(message) == "table" then
-            local highestTimestamp = -math.huge -- Initialize with the smallest possible number
+            local highestTimestamp = -math.huge 
             local key = nil
             local listing = nil
             for v, value in pairs(message["Listings"] or {}) do
