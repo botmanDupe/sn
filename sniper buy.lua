@@ -121,29 +121,12 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
-local function tryPurchase(listings)
-  local queue = {}
-
-  for _, listing in ipairs(listings) do
-    table.insert(queue, {
-      listing = listing,
-      remainingCooldown = calculateRemainingCooldown(listing["ReadyTimestamp"], listing["Timestamp"]),
-    })
-  end
-
-  while #queue > 0 do
-    local listing = queue[1]
-
-    if listing.remainingCooldown > 0 then
-      task.wait(0.1)
-      listing.remainingCooldown = calculateRemainingCooldown(listing["ReadyTimestamp"], listing["Timestamp"])
-    else
-      local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-      processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
-
-      table.remove(queue, 1)
+local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    if buytimestamp > listTimestamp then
+      task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
     end
-  end
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
