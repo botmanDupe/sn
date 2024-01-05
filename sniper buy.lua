@@ -128,22 +128,22 @@ local ts = game:GetService("TeleportService")
 local Library = require(game:GetService("ReplicatedStorage"):WaitForChild("Library"))
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    local coolingOff = true
-    local coolingOffTime = buytimestamp - os.clock()
-    if coolingOffTime <= 0 then
-        coolingOff = false
-    end
+  local coolingOff = true
+  local coolingOffTime = buytimestamp - osclock()
+  if coolingOffTime <= 0 then
+    coolingOff = false
+  end
 
-    if coolingOff then
-        local timeLeft = math.ceil(coolingOffTime)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-        task.wait(timeLeft)
-    end
+  if coolingOff then
+    local timeLeft = math.ceil(coolingOffTime)
+    processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    task.wait(timeLeft)
+  end
 
-    if not coolingOff then
-        local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    end
+  if not coolingOff then
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+  end
 end
 
 
