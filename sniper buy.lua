@@ -142,10 +142,11 @@ local function tryPurchase(uid, gems, item, version, shiny, amount, username, cl
 
   if not coolingOff then
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    if boughtPet then
+      processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    end
   end
 end
-
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if type(message) == "table" then
