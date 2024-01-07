@@ -3,9 +3,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(30)
+task.wait(20)
 
-setfpscap(10)
+setfpscap(20)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -18,7 +18,7 @@ local rs = game:GetService("ReplicatedStorage")
 local snipeNormal
 local Library = require(rs:WaitForChild("Library"))
 
-if not snipeNormalPets then
+if snipeNormalPets == nil then
     snipeNormalPets = false
 end
 
@@ -223,7 +223,7 @@ local function jumpToServer()
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
     local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 3)
+    local deep = math.random(1, 2)
     if deep > 1 then 
         for i = 1, deep, 1 do 
              req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
@@ -247,7 +247,7 @@ local function jumpToServer()
 end
 
 if PlayerInServer < 25 then
-    while task.wait(1) do
+    while task.wait(10) do
 	jumpToServer()
     end
 end
@@ -255,7 +255,7 @@ end
 for i = 1, PlayerInServer do
    for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            while task.wait(1) do
+            while task.wait(10) do
 		jumpToServer()
 	    end
         end
@@ -266,7 +266,7 @@ Players.PlayerRemoving:Connect(function(player)
     getPlayers = Players:GetPlayers()
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
-        while task.wait(1) do
+        while task.wait(10) do
 	    jumpToServer()
 	end
     end
@@ -276,18 +276,18 @@ Players.PlayerAdded:Connect(function(player)
     for i = 1,#alts do
         if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
 	    task.wait(math.random(0, 60))
-            while task.wait(1) do
+            while task.wait(10) do
 	        jumpToServer()
 	    end
         end
     end
 end) 
 
-local hopDelay = math.random(840, 1140)
+local hopDelay = math.random(720, 1080)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
-        while task.wait(1) do
+        while task.wait(10) do
 	    jumpToServer()		
 	end	
     end
