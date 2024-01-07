@@ -127,22 +127,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-  local coolingOff = true
-  local coolingOffTime = buytimestamp - osclock()
-  if coolingOffTime <= 0 then
-    coolingOff = false
-  end
-  if coolingOff then
-    local timeLeft = math.ceil(coolingOffTime)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    task.wait(timeLeft)
-  end
-  if not coolingOff then
-    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    if boughtPet then
-      processListingInfo(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    if buytimestamp > listTimestamp then
+      task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
     end
-  end
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
