@@ -3,7 +3,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(20) -- i hate library loading
+task.wait(15) -- i hate library loading
 
 setfpscap(10)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
@@ -138,10 +138,14 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    if buytimestamp > listTimestamp then
-	task.wait(buytimestamp - workspace:GetServerTimeNow() - Players.LocalPlayer:GetNetworkPing())
-    end
-    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    signal = game:GetService("RunService").Heartbeat:Connect(function()
+	if buytimestamp < workspace:GetServerTimeNow() - Players.LocalPlayer:GetNetworkPing() then
+	    signal:Disconnect()
+	    signal = nil
+        end
+    end)
+    repeat task.wait() until signal == nil
+    local boughtPet, boughtMessage = rs.Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
@@ -175,10 +179,10 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 local unitGems = gems/amount
 		snipeNormal = false
 				
-                if string.find(item, "Huge") and unitGems <= 500000 then
+                if string.find(item, "Huge") and unitGems <= 1000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-		elseif string.find(item, "Charm") and unitGems <= 30000 then
+		elseif string.find(item, "Charm") and unitGems <= 15000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif snipeNormalPets == true and gems == 1 then
@@ -187,31 +191,31 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                         return
                 elseif class == "Pet" then
                     local type = Library.Directory.Pets[item]
-                    if type.exclusiveLevel and unitGems <= 15000 and item ~= "Banana" and item ~= "Coin" then
+                    if type.exclusiveLevel and unitGems <= 30000 and item ~= "Banana" and item ~= "Coin" then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
-                    elseif type.titanic and unitGems <= 5000000 then
+                    elseif type.titanic and unitGems <= 10000000 then
 			coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
-                    elseif type.huge and unitGems <= 500000 then
+                    elseif type.huge and unitGems <= 1000000 then
 			coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
 		    end
                 elseif (item == "Titanic Christmas Present" or string.find(item, "2024 New Year")) and unitGems <= 30000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-		elseif class == "Charm" and unitGems <= 10000 then
+		elseif class == "Charm" and unitGems <= 30000 then
 		    if not string.find(item, "Coins") and not string.find(item, "Agility") and not string.find(item, "Bonus") then
                     	coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     	return
 	            end
-                elseif class == "Egg" and unitGems <= 30000 then
+                elseif class == "Egg" and unitGems <= 100000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif ((string.find(item, "Key") and not string.find(item, "Lower")) or string.find(item, "Ticket")) and unitGems <= 2500 then 
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif class == "Enchant" and unitGems <= 15000 then
+                elseif class == "Enchant" and unitGems <= 50000 then
                     if item == "Fortune" then 
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
@@ -263,7 +267,7 @@ local function jumpToServer()
     ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
-if PlayerInServer < 25 then
+if PlayerInServer < 30 then
     while task.wait(10) do
 	jumpToServer()
     end
@@ -282,7 +286,7 @@ end
 Players.PlayerRemoving:Connect(function(player)
     getPlayers = Players:GetPlayers()
     PlayerInServer = #getPlayers
-    if PlayerInServer < 25 then
+    if PlayerInServer < 30 then
         while task.wait(10) do
 	    jumpToServer()
 	end
@@ -300,7 +304,7 @@ Players.PlayerAdded:Connect(function(player)
     end
 end) 
 
-local hopDelay = math.random(720, 960)
+local hopDelay = math.random(720, 1000)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
